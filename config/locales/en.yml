@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+en:
+  home:
+    index:
+      title: "Hello!"
+      welcome: "Welcome to our website."

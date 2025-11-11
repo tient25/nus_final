@@ -1,0 +1,10 @@
+main {
+  background-color: #f8f8f8;
+}
+
+/* CARD CSS */
+.card {
+  background-color: #f8f8f8;
+  border-radius: 10%;
+  border: none;
+}
