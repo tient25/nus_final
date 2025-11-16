@@ -1,0 +1,64 @@
+<div class="users-new">
+  <main class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center gap-3">
+    <div>
+      <h1 class="fw-bold">Fotobook Signup</h1>
+
+      <div
+        class="signup-options d-flex justify-content-around border border-1 py-2 rounded-2 mb-3 mx-auto"
+      >
+        <div class="signup-logo">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
+            alt="Google"
+          />
+        </div>
+        <div class="signup-logo">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/500px-Facebook_Logo_%282019%29.png"
+            alt="Facebook"
+          />
+        </div>
+        <div class="signup-logo">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1KIiiT5DTAhecHf_G9ZWbe683H5-UowCoq2m0IVFEKnPWOl5NIuLuD3eLjF3v4_TjY_Q&usqp=CAU"
+            alt="Twitter"
+          />
+        </div>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
+                   html: { class: "signup-form rounded-3 d-flex flex-column align-items-center justify-content-around shadow-sm" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="">
+          <%= f.label :first_name, "First Name", class: "fw-bold" %>
+          <%= f.text_field :first_name, class: "form-control", placeholder: "First Name", required: true %>
+        </div>
+
+        <div class="">
+          <%= f.label :last_name, "Last Name", class: "fw-bold" %>
+          <%= f.text_field :last_name, class: "form-control", placeholder: "Last Name", required: true%>
+        </div>
+
+        <div class="mb-2">
+          <%= f.label :email, "Email", class: "fw-bold" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email", required: true %>
+        </div>
+
+        <div class="mb-2">
+          <%= f.label :password, "New Password", class: "fw-bold" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "New Password", required: true%>
+        </div>
+
+        <div class="mb-2">
+          <%= f.label :password_confirmation, "Password Confirmation", class: "fw-bold" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Password", required: true %>
+        </div>
+
+        <%= f.submit "Signup", class: "rounded-2 mt-2 py-2 px-3" %>
+      <% end %>
+
+     
+    </div>
+  </main>
+</div>

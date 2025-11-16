@@ -1,4 +1,14 @@
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  validates :first_name, presence: true, length: { maximum: 25 }
+  validates :last_name, presence: true, length: { maximum: 25 }
+  validates :email, presence: true, length: { maximum: 255 }, uniqueness: true
+  validates :password, length: { maximum: 64 }, allow_blank: true
+
   has_and_belongs_to_many :followings, class_name: "User", join_table: :follows, foreign_key: :follower_id, association_foreign_key: :followed_user_id
   has_and_belongs_to_many :followers, class_name: "User", join_table: :follows, foreign_key: :followed_user_id, association_foreign_key: :follower_id
 
