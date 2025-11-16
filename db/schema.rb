@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_12_091920) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_14_090651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,9 +36,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_091920) do
     t.bigint "user_id", null: false
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "followed_user_id", null: false
+    t.bigint "follower_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followed_user_id"], name: "index_follows_on_followed_user_id"
+    t.index ["follower_id"], name: "index_follows_on_follower_id"
+  end
+
   create_table "photos", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
+    t.string "image"
     t.boolean "is_standalone"
     t.integer "likes_count"
     t.date "publication_date"
@@ -67,5 +77,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_091920) do
   end
 
   add_foreign_key "albums", "users"
+  add_foreign_key "follows", "users", column: "followed_user_id"
+  add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "photos", "users"
 end
