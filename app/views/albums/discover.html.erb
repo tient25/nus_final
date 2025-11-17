@@ -5,18 +5,18 @@
       <% if @albums.any? %>
         <div class="row g-3">
           <% @albums.each do |album| %>
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-6">
               <%= render 'card', album: album %>
             </div>
           <% end %>
         </div>
         <!-- Load More Button -->
-        <div class="text-center mt-5">
+        <%# <div class="text-center mt-5">
           <button class="btn btn-outline-primary btn-lg">
             <i class="fas fa-refresh me-2"></i>
             Discover More Albums
           </button>
-        </div>
+        </div> %>
       <% end %>
     </div>
   </div>

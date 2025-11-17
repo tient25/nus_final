@@ -3,9 +3,13 @@
 
   .search-bar {
     color: #d7d9da;
+    margin-right: 20%;
   }
 
   .user-avatar {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
     .rounded-circle {
       border: 2px solid rgba(255, 255, 255, 0.3);
     }
