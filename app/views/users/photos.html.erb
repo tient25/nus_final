@@ -1,0 +1,26 @@
+<%= render 'user_header', user: @user, photos_count: @photos_count, albums_count: @albums_count, following_count: @following_count, followers_count: @followers_count %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h3 class="fw-bold mb-4">Photos</h3>
+      <% if @photos.any? %>
+        <div class="row g-3">
+          <% @photos.each do |photo| %>
+            <div class="col-6 col-md-3 col-lg-3">
+              <div class="">
+                <% if photo.image.present? %>
+                  <%= image_tag photo.image.url, alt: photo.title,
+                                class: "profile-photo-cover img-fluid w-100 rounded shadow-sm",
+                                data: { bs_toggle: "modal", bs_target: "#photoModal#{photo.id}" } %>
+                  <p class="px-2 text-muted text-center mb-4"><%= photo.title %></p>
+                <% end %>
+              </div>
+              <!-- Include modal-->
+              <%= render 'photos/modal', photo: photo %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

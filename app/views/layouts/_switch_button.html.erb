@@ -1,0 +1,58 @@
+<div class="switch-btn container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-center py-2">
+        <div class="btn-group" role="group" aria-label="Content type switch">
+          <button type="button" class="switch-btn-item text-uppercase fw-bold px-4 <%= 'active' if request.path.include?('photos') %>" id="photo-btn">
+            PHOTO
+          </button>
+          <button type="button" class="switch-btn-item text-uppercase fw-bold px-4 <%= 'active' if request.path.include?('albums') %>" id="album-btn">
+            ALBUM
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const photoBtn = document.getElementById('photo-btn');
+    const albumBtn = document.getElementById('album-btn');
+
+    if (photoBtn && albumBtn) {
+      photoBtn.addEventListener('click', function() {
+        const currentPath = window.location.pathname;
+        let newPath;
+
+        if (currentPath.includes('albums/feeds')) {
+          newPath = '/photos/feeds';
+        } else if (currentPath.includes('albums/discover')) {
+          newPath = '/photos/discover';
+        } else if (currentPath.includes('albums/')) {
+          newPath = '/photos/feeds'; // fallback
+        } else {
+          return; // already on photos
+        }
+
+        window.location.href = newPath;
+      });
+
+      albumBtn.addEventListener('click', function() {
+        const currentPath = window.location.pathname;
+        let newPath;
+
+        if (currentPath.includes('photos/feeds')) {
+          newPath = '/albums/feeds';
+        } else if (currentPath.includes('photos/discover')) {
+          newPath = '/albums/discover';
+        } else if (currentPath.includes('photos/')) {
+          newPath = '/albums/feeds'; // fallback
+        } else {
+          return; // already on albums
+        }
+
+        window.location.href = newPath;
+      });
+    }
+  });
+</script>

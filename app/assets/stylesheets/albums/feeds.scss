@@ -1,0 +1,28 @@
+.albums-feeds {
+  .card {
+    .follow-btn {
+      background: linear-gradient(
+        90deg,
+        rgba(131, 58, 180, 1) 0%,
+        rgba(253, 29, 29, 1) 0%,
+        rgba(252, 176, 69, 1) 100%
+      );
+
+      border: none;
+      color: #fff;
+      font-size: 9px;
+    }
+    #user-name {
+      font-size: 12px;
+    }
+    .album-cover {
+      object-fit: cover;
+      min-height: 200px;
+      cursor: pointer;
+    }
+    .albums-img-modal {
+      max-height: 80vh;
+      object-fit: cover;
+    }
+  }
+}

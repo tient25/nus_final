@@ -1,0 +1,80 @@
+<div class="user-header mb-4">
+  <div class="container-fluid">
+    <div class="row align-items-center py-4">
+      <div class="col-12 col-md-auto mb-3 mb-md-0">
+        <!-- User Avatar -->
+        <div class="text-center text-md-start">
+          <% if user.avatar.present? %>
+            <%= image_tag user.avatar, 
+                          alt: user.username,
+                          class: "rounded-circle border",
+                          style: "width: 120px; height: 120px; object-fit: cover;" %>
+          <% else %>
+            <div class="bg-light rounded-circle border mx-auto d-flex align-items-center justify-content-center"
+                 style="width: 120px; height: 120px;">
+              <i class="fas fa-user fa-3x text-muted"></i>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-12 col-md">
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-center justify-content-md-start gap-2">
+          <% if current_user && current_user != user %>
+            <% if current_user.followings.include?(@user) %>
+              <button class="follow-btn btn  btn-sm px-2 fw-bold rounded-pill" data-user-id="<%= @user.id %>">
+                Following
+              </button>
+            <% else %>
+              <button class="follow-btn btn  btn-sm px-2 fw-bold rounded-pill" data-user-id="<%= @user.id %>">
+                Follow
+              </button>
+            <% end %>
+          <% elsif current_user == user %>
+            <button class="btn btn-outline-primary">
+              <i class="fas fa-edit me-1"></i>
+              Edit Profile
+            </button>
+          <% end %>
+        </div>
+        <div class="text-center text-md-start">
+          <!-- User Info -->
+          <div class="mb-3">
+            <h2 class="fw-bold mb-1"><%= user.username %></h2>
+          </div>
+          <!-- User Stats -->
+          <div class="row user-stats text-uppercase">
+            <div class="col-3">
+              <%= link_to photos_user_path(user), 
+                        class: "active text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1 " do %>
+                <div class="fw-bold fs-5 "><%= photos_count %></div>
+                <div class=" ">Photos</div>
+              <% end %>
+            </div>
+            <div class="col-3">
+              <%= link_to albums_user_path(user), 
+                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                <div class="fw-bold fs-5"><%= albums_count %></div>
+                <div class=" ">Albums</div>
+              <% end %>
+            </div>
+            <div class="col-3">
+              <%= link_to following_user_path(user), 
+                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                <div class="fw-bold fs-5"><%= following_count %></div>
+                <div class=" ">Following</div>
+              <% end %>
+            </div>
+            <div class="col-3">
+              <%= link_to followers_user_path(user), 
+                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                <div class="fw-bold fs-5"><%= followers_count %></div>
+                <div class=" ">Followers</div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
