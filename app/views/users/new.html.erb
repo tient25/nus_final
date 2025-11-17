@@ -1,0 +1,93 @@
+
+  <div class="users-new">
+    <main class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center gap-3">
+      <div>
+        <h1 class="fw-bold">Fotobook Signup</h1>
+
+        <div
+          class="signup-options d-flex justify-content-around border border-1 py-2 rounded-2 mb-3 mx-auto"
+        >
+          <div class="signup-logo">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
+              alt="Google"
+            />
+          </div>
+          <div class="signup-logo">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/500px-Facebook_Logo_%282019%29.png"
+              alt="Facebook"
+            />
+          </div>
+          <div class="signup-logo">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1KIiiT5DTAhecHf_G9ZWbe683H5-UowCoq2m0IVFEKnPWOl5NIuLuD3eLjF3v4_TjY_Q&usqp=CAU"
+              alt="Twitter"
+            />
+          </div>
+        </div>
+
+        <form
+          action=""
+          class="signup-form rounded-3 d-flex flex-column align-items-center justify-content-around shadow-sm"
+        >
+          <div class="">
+            <label for="firstName" class="fw-bold">First Name</label>
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              class="form-control"
+              placeholder="First Name"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <div class="">
+            <label for="lastName" class="fw-bold">Last Name</label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              class="form-control"
+              placeholder="Last Name"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <div class="mb-2">
+            <label for="password" class="fw-bold">New Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              class="form-control"
+              placeholder="New Password"
+              required
+              aria-required="true"
+              minlength="6"
+            />
+          </div>
+
+          <div class="mb-2">
+            <label for="confirmPassword" class="fw-bold"
+              >Password Confirmation</label
+            >
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              required
+              aria-required="true"
+              minlength="6"
+            />
+          </div>
+          <button class="rounded-2 mt-2 py-2 px-3" type="submit">Signup</button>
+        </form>
+      </div>
+    </main>
+  </div>

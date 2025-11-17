@@ -1,0 +1,24 @@
+<!-- Bootstrap Modal for Photo -->
+<div class="modal fade" id="photoModal<%= photo.id %>" tabindex="-1" aria-labelledby="photoModalLabel<%= photo.id %>" aria-hidden="true">
+  <div class="modal-dialog modal-lg ">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-between  align-items-center p-3 ">
+        <h5 class="modal-title fw-bold" id="photoModalLabel<%= photo.id %>">
+          <%= photo.title %>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="col-md-12 d-flex justify-content-center px-2">
+          <% if photo.image.present? %>
+            <%= image_tag photo.image.url, alt: photo.title, 
+                            class: "modal-photo img-fluid w-100"%>
+          <% end %>
+        </div>
+        <p class="px-2 text-muted mb-4">
+          <%= photo.description %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

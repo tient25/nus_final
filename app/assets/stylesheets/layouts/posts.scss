@@ -1,0 +1,23 @@
+.posts {
+  background-color: #f8f8f8;
+  .side-bar {
+    a {
+      color: #9e9e9e;
+      border: none;
+    }
+    .active {
+      color: #385994;
+    }
+  }
+  .switch-btn {
+    button {
+      background-color: #ffffff;
+      border: 1px solid #385994;
+      color: #385994;
+    }
+    button.active {
+      background-color: #385994;
+      color: #ffffff;
+    }
+  }
+}

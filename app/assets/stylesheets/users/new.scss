@@ -1,0 +1,50 @@
+.users-new {
+  main h1 {
+    color: #3d5a97;
+  }
+
+  main a {
+    color: #3d5a97;
+  }
+
+  .signup-options {
+    width: 85%;
+  }
+
+  .signup-logo {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .signup-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-logo {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+  }
+
+  .user-logo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .signup-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+
+  .signup-form input[type="submit"] {
+    background-color: #3d5a97;
+    border: none;
+    color: white;
+    font-weight: bold;
+  }
+}

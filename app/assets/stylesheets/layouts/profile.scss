@@ -1,0 +1,41 @@
+.profile {
+  background-color: #f8f8f8;
+  .side-bar {
+    a {
+      color: #9e9e9e;
+      border: none;
+    }
+    .active {
+      color: #385994;
+    }
+  }
+
+  .follow-btn {
+    background: linear-gradient(
+      90deg,
+      rgba(131, 58, 180, 1) 0%,
+      rgba(253, 29, 29, 1) 0%,
+      rgba(252, 176, 69, 1) 100%
+    );
+    border: none;
+    color: #fff;
+    font-size: 9px;
+  }
+  .user-stats {
+    a {
+      color: #858585;
+    }
+    a.active {
+      color: #385994;
+    }
+  }
+  .profile-albums-cover {
+    height: 200px;
+    object-fit: cover;
+  }
+  .profile-photo-cover {
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+}

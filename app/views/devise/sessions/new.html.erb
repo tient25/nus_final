@@ -1,0 +1,31 @@
+<div class="sessions-new">
+  <main class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center gap-3">
+    <div>
+      <h1 class="fw-bold">Fotobook Login</h1>
+      <div class="login-options d-flex justify-content-around border border-1 p-2 rounded-2 mb-2">
+        <div class="login-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" alt="Google">
+        </div>
+        <div class="login-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/500px-Facebook_Logo_%282019%29.png" alt="Facebook">
+        </div>
+        <div class="login-logo">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1KIiiT5DTAhecHf_G9ZWbe683H5-UowCoq2m0IVFEKnPWOl5NIuLuD3eLjF3v4_TjY_Q&usqp=CAU" alt="Twitter">
+        </div>
+      </div>
+      <div class="login-form rounded-3 d-flex flex-column align-items-center justify-content-around shadow-sm gap-2">
+        <div class="user-logo">
+          <img src="https://publisher.admicro.vn/dashboard/static/images/photo.png" alt="User">
+        </div>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), 
+                     html: { class: "d-flex flex-column align-items-center" }) do |f| %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "Password" %>
+          <%= f.submit "Login", class: "rounded-2 my-3 py-2 px-3" %>
+          <a href="#" class="text-decoration-none">Forgot password</a>
+        <% end %>
+      </div>
+    </div>
+    <a href="#" class="text-decoration-none">Create an account</a>
+  </main>
+</div>
