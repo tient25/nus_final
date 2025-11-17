@@ -3,7 +3,7 @@
     <div class="col-12 col-md-6">
       <% if album.photos.any? %>
         <%= image_tag album.photos.first.image.url, alt: album.title, 
-                    class: "album-cover img-fluid w-100 h-100", 
+                    class: "album-cover img-fluid overflow-hidden w-100 h-100", 
                     data: { bs_toggle: "modal", bs_target: "#albumModal#{album.id}" } %>
       <% end %>
     </div>
@@ -11,7 +11,7 @@
       <div class="card-body d-flex flex-column h-100">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
-            <div class="me-3">
+            <div class="me-1">
               <%= link_to photos_user_path(album.user) do %>
                 <% if album.user.avatar.present? %>
                   <%= image_tag album.user.avatar, 
@@ -47,7 +47,6 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 <%#adđ Modal %>
 <%= render 'modal', album: album %>

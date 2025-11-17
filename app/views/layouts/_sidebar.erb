@@ -1,10 +1,10 @@
 <div class="side-bar col-lg-2 col-xl-2">
   <div class="sticky-top pt-3">
     <div class="d-flex flex-column text-center gap-2">
-      <%= link_to feeds_photos_path, class: "active text-center fw-bold py-3 text-decoration-none", id: "feeds-btn" do %>
+      <%= link_to feeds_photos_path, class: "#{request.path == feeds_photos_path ? 'active' : ''} text-center fw-bold py-3 text-decoration-none", id: "feeds-btn" do %>
         Feeds
       <% end %>
-      <%= link_to discover_photos_path, class: "text-center fw-bold text-decoration-none", id: "discover-btn" do %>
+      <%= link_to discover_photos_path, class: "#{request.path == discover_photos_path ? 'active' : ''} text-center fw-bold py-3 text-decoration-none", id: "discover-btn" do %>
         Discover
       <% end %>
     </div>
