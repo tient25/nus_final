@@ -2,7 +2,13 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h3 class="fw-bold mb-4">Albums</h3>
+      <% if current_user == @user %>
+        <div class="d-flex justify-content-end mb-3" >
+          <%= link_to new_album_path do %>
+            <button class="add-new-btn rounded-pill px-2 fw-bold">Add Album</button>
+          <% end %>
+        </div>
+      <% end %>
       <% if @albums.any? %>
         <div class="row g-4">
           <% @albums.each do |album| %>
@@ -11,8 +17,27 @@
                 <div class="album-cover position-relative">
                   <% if album.photos.any? %>
                     <%= image_tag album.photos.first.image.url, 
-                                  class: "profile-albums-cover img-fluid w-100 rounded-top"%>
-                    <p class="px-2 text-muted text-center mb-4"><%= album.photos.first.title %></p>
+                                  class: "profile-albums-cover img-fluid w-100 rounded-top",
+                                  data: { bs_toggle: "modal", bs_target: "#albumModal#{album.id}" } %>
+                    <% if current_user == album.user %>
+                      <%= link_to edit_album_path(album), class: "album-edit-btn position-absolute" do %>
+                        <i class="fas fa-edit"></i>
+                      <% end %>
+                    <% end %>
+                    <p class="px-2 text-muted text-center mb-4"><%= album.title %></p>
+                  <% else %>
+                    <div class="album-placeholder d-flex align-items-center justify-content-center bg-light rounded-top position-relative"
+                         style="height: 200px;"
+                         data-bs-toggle="modal" 
+                         data-bs-target="#albumModal<%= album.id %>">
+                      <i class="fas fa-images fa-3x text-muted"></i>
+                      <% if current_user == album.user %>
+                        <%= link_to edit_album_path(album), class: "album-edit-btn position-absolute" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                      <% end %>
+                    </div>
+                    <p class="px-2 text-muted text-center mb-4"><%= album.title %></p>
                   <% end %>
                 </div>
               </div>
@@ -31,3 +56,49 @@
     </div>
   </div>
 </div>
+<style>
+  .album-edit-btn {
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+
+  .album-edit-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-decoration: none;
+  }
+
+  .album-cover:hover .album-edit-btn {
+    opacity: 1;
+  }
+
+  .profile-albums-cover {
+    transition: transform 0.3s ease;
+  }
+
+  .album-cover:hover .profile-albums-cover {
+    transform: scale(1.02);
+  }
+
+  .album-placeholder {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .album-cover:hover .album-placeholder {
+    transform: scale(1.02);
+  }
+</style>

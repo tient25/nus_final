@@ -1,5 +1,5 @@
 <div class="add-new container">
-  <%= form_with(model: @photo, local: true, html: { multipart: true, class: "new-photo-form" }) do |form| %>
+  <%= form_with(model: @photo, local: true, html: { multipart: true, class: "edit-photo-form" }) do |form| %>
     <% if @photo.errors.any? %>
       <div class="alert alert-danger">
         <h4><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h4>
@@ -22,21 +22,28 @@
                 options_for_select([
                   ['Public', true], 
                   ['Private', false]
-                ], @photo.sharing_mode || true), 
+                ], @photo.sharing_mode), 
                 {}, 
                 { class: "form-select" } %>
         </div>
         <div class="image-upload-area">
           <div class="upload-box" onclick="document.getElementById('photo_image').click();">
-            <div class="upload-placeholder" id="upload-placeholder">
-              <div class="upload-icon">+</div>
-            </div>
-            <img id="image-preview" class="image-preview" style="display: none;" />
+            <% if @photo.image.present? %>
+              <img id="image-preview" class="image-preview" src="<%= @photo.image.url %>" />
+              <div class="upload-placeholder" id="upload-placeholder" style="display: none;">
+                <div class="upload-icon">+</div>
+              </div>
+            <% else %>
+              <div class="upload-placeholder" id="upload-placeholder">
+                <div class="upload-icon">+</div>
+              </div>
+              <img id="image-preview" class="image-preview" style="display: none;" />
+            <% end %>
           </div>
           <%= form.file_field :image, class: "file-input", id: "photo_image", accept: "image/*" %>
         </div>
       </div>
-      <!-- Right Column - Image Upload -->
+      <!-- Right Column -->
       <div class="form-right">
         <div class="form-group">
           <%= form.label :description, "Description", class: "form-label" %>
@@ -46,6 +53,10 @@
     </div>
     <div class="form-actions">
       <%= form.submit "Save", class: "btn-save" %>
+      <%= link_to "Delete", photo_path(@photo), 
+          method: :delete, 
+          confirm: "Are you sure you want to delete this photo?", 
+          class: "btn btn-danger ms-2" %>
     </div>
   <% end %>
 </div>
@@ -69,8 +80,15 @@
 
         reader.readAsDataURL(file);
       } else {
-        imagePreview.style.display = 'none';
-        uploadPlaceholder.style.display = 'block';
+        // If no file selected, show current image or placeholder
+        <% if @photo.image.present? %>
+          imagePreview.src = '<%= @photo.image.url %>';
+          imagePreview.style.display = 'block';
+          uploadPlaceholder.style.display = 'none';
+        <% else %>
+          imagePreview.style.display = 'none';
+          uploadPlaceholder.style.display = 'block';
+        <% end %>
       }
     });
   });
