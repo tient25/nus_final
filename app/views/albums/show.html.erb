@@ -1,0 +1,79 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <!-- Album Header -->
+      <div class="album-header mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="h2 fw-bold mb-2"><%= @album.title %></h1>
+            <p class="text-muted mb-0">
+              By <%= link_to @album.user.full_name, user_path(@album.user), class: "text-decoration-none" %>
+              • <%= @album.created_at.strftime("%B %d, %Y") %>
+              • <%= pluralize(@photos.count, 'photo') %>
+            </p>
+            <% if @album.description.present? %>
+              <p class="mt-2"><%= @album.description %></p>
+            <% end %>
+          </div>
+          <% if current_user == @album.user %>
+            <div class="album-actions">
+              <%= link_to "Edit Album", edit_album_path(@album), class: "btn btn-outline-primary btn-sm me-2" %>
+              <%= link_to "Delete", album_path(@album), method: :delete, 
+                          confirm: "Are you sure?", class: "btn btn-outline-danger btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <!-- Photos Grid -->
+      <% if @photos.any? %>
+        <div class="row g-3">
+          <% @photos.each do |photo| %>
+            <div class="col-6 col-md-3 col-lg-3">
+              <div class="photo-item">
+                <% if photo.image.present? %>
+                  <%= image_tag photo.image.url, alt: photo.title,
+                                class: "album-photo-cover img-fluid w-100 rounded shadow-sm",
+                                data: { bs_toggle: "modal", bs_target: "#photoModal#{photo.id}" } %>
+                  <p class="px-2 text-muted text-center mb-2 small"><%= truncate(photo.title, length: 30) %></p>
+                <% end %>
+              </div>
+              <!-- Include photo modal -->
+              <%= render 'photos/modal', photo: photo %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- Empty State -->
+        <div class="text-center py-5">
+          <i class="fas fa-images fa-4x text-muted mb-3"></i>
+          <h4 class="text-muted">No photos in this album yet</h4>
+          <% if current_user == @album.user %>
+            <p class="text-muted mb-3">Add some photos to make this album come alive!</p>
+            <%= link_to "Add Photos", edit_album_path(@album), class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<style>
+  .album-photo-cover {
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .album-photo-cover:hover {
+    transform: scale(1.02);
+  }
+
+  .album-header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .album-actions .btn {
+    font-size: 14px;
+  }
+</style>

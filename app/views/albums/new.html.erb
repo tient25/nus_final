@@ -1,0 +1,258 @@
+<div class="add-new container">
+  <%= form_with(model: @album, local: true, html: { multipart: true, class: "new-album-form" }) do |form| %>
+    <% if @album.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@album.errors.count, "error") %> prohibited this album from being saved:</h4>
+        <ul class="mb-0">
+          <% @album.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-row">
+      <div class="form-left">
+        <div class="form-group">
+          <%= form.label :title, "Title", class: "form-label" %>
+          <%= form.text_field :title, class: "form-control", placeholder: "Album Title" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :sharing_mode, "Sharing mode", class: "form-label" %>
+          <%= form.select :sharing_mode, 
+                options_for_select([
+                  ['Public', true], 
+                  ['Private', false]
+                ], @album.sharing_mode || true), 
+                {}, 
+                { class: "form-select" } %>
+        </div>
+        <div class="image-upload-area">
+          <div class="upload-box" id="main-upload-box" onclick="showPhotoModal()">
+            <div class="upload-placeholder" id="upload-placeholder">
+              <div class="upload-icon">+</div>
+              <div class="upload-text">Click to add photo</div>
+            </div>
+          </div>
+          <%= form.file_field :image, class: "file-input", id: "album_image", accept: "image/*", style: "display: none;" %>
+          <%= hidden_field_tag "album[photo_id]", "", id: "selected_photo_id" %>
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="form-right">
+        <div class="form-group">
+          <%= form.label :description, "Description", class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Album Description" %>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= form.submit "Add Photo to Album", class: "btn-save" %>
+    </div>
+  <% end %>
+</div>
+<!-- Photo Selection Modal -->
+<div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="photoModalLabel">Add Photo to Album</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Mode Selection Tabs -->
+        <ul class="nav nav-tabs mb-3" id="photoTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane" type="button" role="tab">
+              Upload New Photo
+            </button>
+          </li>
+          <% if @user_photos&.any? %>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="select-tab" data-bs-toggle="tab" data-bs-target="#select-pane" type="button" role="tab">
+                Select Existing Photo
+              </button>
+            </li>
+          <% end %>
+        </ul>
+        <div class="tab-content" id="photoTabContent">
+          <!-- Upload Tab -->
+          <div class="tab-pane fade show active" id="upload-pane" role="tabpanel">
+            <div class="upload-area text-center">
+              <div class="modal-upload-box" onclick="document.getElementById('album_image').click();">
+                <div class="upload-icon-large">📁</div>
+                <p class="mb-2">Click to upload a photo</p>
+                <small class="text-muted">JPEG, PNG files only</small>
+              </div>
+              <div id="upload-preview" class="mt-3" style="display: none;">
+                <img id="preview-image" class="preview-image" alt="Preview">
+                <button type="button" class="btn btn-sm btn-danger mt-2" onclick="clearUpload()">Remove</button>
+              </div>
+            </div>
+          </div>
+          <!-- Select Tab -->
+          <% if @user_photos&.any? %>
+            <div class="tab-pane fade" id="select-pane" role="tabpanel">
+              <div class="existing-photos-modal-grid">
+                <% @user_photos.each do |photo| %>
+                  <div class="photo-item-modal">
+                    <label class="photo-modal-label">
+                      <%= radio_button_tag "album[photo_id]", photo.id, false, class: "photo-radio-modal" %>
+                      <div class="photo-preview-modal">
+                        <%= image_tag photo.image.thumb.url, alt: photo.title, class: "photo-thumbnail-modal" %>
+                        <div class="photo-overlay-modal">
+                          <div class="checkmark">✓</div>
+                        </div>
+                      </div>
+                      <div class="photo-title-modal"><%= truncate(photo.title, length: 15) %></div>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="confirmPhotoSelection()" id="confirm-photo-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let selectedPhoto = null;
+  let uploadedFile = null;
+
+  // Show photo selection modal
+  function showPhotoModal() {
+    const modal = new bootstrap.Modal(document.getElementById('photoModal'));
+    modal.show();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('album_image');
+    const uploadPreview = document.getElementById('upload-preview');
+    const previewImage = document.getElementById('preview-image');
+
+    // Handle file upload in modal
+    fileInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          uploadPreview.style.display = 'block';
+          uploadedFile = file;
+
+          // Clear any selected existing photos
+          const radioButtons = document.querySelectorAll('.photo-radio-modal');
+          radioButtons.forEach(radio => radio.checked = false);
+
+          // Clear hidden photo_id field
+          document.getElementById('selected_photo_id').value = '';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Handle existing photo selection
+    const radioButtons = document.querySelectorAll('.photo-radio-modal');
+    radioButtons.forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          selectedPhoto = {
+            id: this.value,
+            image: this.closest('.photo-item-modal').querySelector('.photo-thumbnail-modal').src
+          };
+
+          // Update hidden field
+          document.getElementById('selected_photo_id').value = this.value;
+
+          // Clear file upload
+          fileInput.value = '';
+          uploadPreview.style.display = 'none';
+          uploadedFile = null;
+        }
+      });
+    });
+  });
+
+  // Clear upload
+  function clearUpload() {
+    const fileInput = document.getElementById('album_image');
+    const uploadPreview = document.getElementById('upload-preview');
+
+    fileInput.value = '';
+    uploadPreview.style.display = 'none';
+    uploadedFile = null;
+  }
+
+  // Confirm photo selection
+  function confirmPhotoSelection() {
+    const mainUploadBox = document.getElementById('main-upload-box');
+    const hiddenPhotoId = document.getElementById('selected_photo_id');
+
+    if (uploadedFile) {
+      // Show uploaded file in main box
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        mainUploadBox.innerHTML = `
+          <img src="${e.target.result}" alt="Selected photo" class="uploaded-image">
+          <button type="button" class="remove-btn" onclick="removeSelectedPhoto()">×</button>
+        `;
+        mainUploadBox.onclick = null;
+      };
+      reader.readAsDataURL(uploadedFile);
+
+      // Clear hidden photo_id since we're uploading
+      hiddenPhotoId.value = '';
+
+    } else if (selectedPhoto) {
+      // Show selected existing photo in main box
+      mainUploadBox.innerHTML = `
+        <img src="${selectedPhoto.image}" alt="Selected photo" class="uploaded-image">
+        <button type="button" class="remove-btn" onclick="removeSelectedPhoto()">×</button>
+      `;
+      mainUploadBox.onclick = null;
+
+      // Set hidden photo_id
+      hiddenPhotoId.value = selectedPhoto.id;
+
+    } else {
+      alert('Please select or upload a photo');
+      return;
+    }
+
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('photoModal'));
+    modal.hide();
+  }
+
+  // Remove selected photo
+  function removeSelectedPhoto() {
+    const mainUploadBox = document.getElementById('main-upload-box');
+    const fileInput = document.getElementById('album_image');
+    const hiddenPhotoId = document.getElementById('selected_photo_id');
+
+    // Reset main upload box
+    mainUploadBox.innerHTML = `
+      <div class="upload-placeholder" id="upload-placeholder">
+        <div class="upload-icon">+</div>
+        <div class="upload-text">Click to add photo</div>
+      </div>
+    `;
+    mainUploadBox.onclick = showPhotoModal;
+
+    // Clear form data
+    fileInput.value = '';
+    hiddenPhotoId.value = '';
+    const radioButtons = document.querySelectorAll('.photo-radio-modal');
+    radioButtons.forEach(radio => radio.checked = false);
+
+    // Clear modal state
+    document.getElementById('upload-preview').style.display = 'none';
+    selectedPhoto = null;
+    uploadedFile = null;
+  }
+</script>

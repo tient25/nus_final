@@ -46,30 +46,30 @@
           <div class="row user-stats text-uppercase">
             <div class="col-3">
               <%= link_to photos_user_path(user), 
-                        class: "active text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1 " do %>
-                <div class="fw-bold fs-5 "><%= photos_count %></div>
-                <div class=" ">Photos</div>
+                        class: "#{'active ' if request.path == photos_user_path(user)}text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                <div class="fw-bold fs-5"><%= photos_count %></div>
+                <div class="">Photos</div>
               <% end %>
             </div>
             <div class="col-3">
               <%= link_to albums_user_path(user), 
-                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                        class: "#{'active ' if request.path == albums_user_path(user)}text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
                 <div class="fw-bold fs-5"><%= albums_count %></div>
-                <div class=" ">Albums</div>
+                <div class="">Albums</div>
               <% end %>
             </div>
             <div class="col-3">
               <%= link_to following_user_path(user), 
-                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                        class: "#{'active ' if request.path == following_user_path(user)}text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
                 <div class="fw-bold fs-5"><%= following_count %></div>
-                <div class=" ">Following</div>
+                <div class="">Following</div>
               <% end %>
             </div>
             <div class="col-3">
               <%= link_to followers_user_path(user), 
-                        class: "text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
+                        class: "#{'active ' if request.path == followers_user_path(user)}text-decoration-none user-stat-link d-flex justify-content-center justify-content-md-start align-items-center gap-1" do %>
                 <div class="fw-bold fs-5"><%= followers_count %></div>
-                <div class=" ">Followers</div>
+                <div class="">Followers</div>
               <% end %>
             </div>
           </div>

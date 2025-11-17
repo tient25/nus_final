@@ -30,9 +30,13 @@
               <% end %>
             </div>
           </div>
-          <button class="follow-btn btn  btn-sm px-2 fw-bold rounded-pill" data-user-id="<%= photo.user.id %>">
-            Follow
-          </button>
+          <% if current_user == photo.user %>
+            <%= link_to "Edit", edit_photo_path(photo), class: "btn btn-outline-primary btn-sm px-3 fw-bold rounded-pill" %>
+          <% else %>
+            <button class="follow-btn btn  btn-sm px-2 fw-bold rounded-pill" data-user-id="<%= photo.user.id %>">
+              Follow
+            </button>
+          <% end %>
         </div>
         <p class="card-title mb-2 fw-bold"><%= photo.title %></p>
         <p class="card-text text-muted flex-grow-1 fs-6" ">
@@ -77,9 +81,7 @@
           heartIcon.classList.add('fas');
           likeCount.textContent = parseInt(likeCount.textContent) + 1;
         }
-
-        // Here you would typically make an AJAX call to update the server
-        // fetch(`/photos/${photoId}/like`, { method: 'POST' })
+        // AJAX call
       });
     });
 

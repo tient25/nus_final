@@ -2,16 +2,26 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h3 class="fw-bold mb-4">Photos</h3>
-      <% if @photos.any? %>
+      <% if current_user == @user %>
+        <div class="d-flex justify-content-end mb-3" >
+          <%= link_to new_photo_path do %>
+            <button class="add-new-btn rounded-pill px-2 fw-bold">Add Photo</button>
+          <% end %>
+        </div>
+      <% end %>      <% if @photos.any? %>
         <div class="row g-3">
           <% @photos.each do |photo| %>
             <div class="col-6 col-md-3 col-lg-3">
-              <div class="">
+              <div class="position-relative">
                 <% if photo.image.present? %>
                   <%= image_tag photo.image.url, alt: photo.title,
                                 class: "profile-photo-cover img-fluid w-100 rounded shadow-sm",
                                 data: { bs_toggle: "modal", bs_target: "#photoModal#{photo.id}" } %>
+                  <% if current_user == photo.user %>
+                    <%= link_to edit_photo_path(photo), class: "photo-edit-btn position-absolute" do %>
+                      <i class="fas fa-edit"></i>
+                    <% end %>
+                  <% end %>
                   <p class="px-2 text-muted text-center mb-4"><%= photo.title %></p>
                 <% end %>
               </div>
@@ -24,3 +34,4 @@
     </div>
   </div>
 </div>
+<style></style>

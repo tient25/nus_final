@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
 
   def new
     @photo = current_user.photos.build
-    render layout: "posts"
+    render layout: "profile"
   end
 
   def create
@@ -22,20 +22,28 @@ class PhotosController < ApplicationController
   end
 
   def edit
-    render layout: "posts"
+    # Only allow user to edit their own photos
+    # redirect_to @photo unless @photo.user == current_user
+    render layout: "profile"
   end
 
   def update
+    # Only allow user to update their own photos
+    redirect_to @photo unless @photo.user == current_user
+
     if @photo.update(photo_params)
       redirect_to @photo, notice: "Photo was successfully updated."
     else
-      render :edit, layout: "posts", status: :unprocessable_entity
+      render :edit, layout: "profile", status: :unprocessable_entity
     end
   end
 
   def destroy
+    # Only allow user to delete their own photos
+    redirect_to feeds_photos_path unless @photo.user == current_user
+
     @photo.destroy
-    redirect_to feeds_photos_path, notice: "Photo was successfully deleted."
+    redirect_to user_photos_path(current_user), notice: "Photo was successfully deleted."
   end
 
   def feeds
